@@ -51,13 +51,6 @@ function isOnlySpecialChars(str: string): boolean {
 }
 
 /**
- * 检查字符串是否为纯空白字符
- */
-function isOnlyWhitespace(str: string): boolean {
-  return str.trim().length === 0
-}
-
-/**
  * 校验结果接口
  */
 export interface ValidationResult {
@@ -160,11 +153,6 @@ export function validateContent(content: string): ValidationResult {
   // 最大长度检查
   if (trimmed.length > rules.maxLength) {
     return { valid: false, error: `${rules.fieldName}不能超过${rules.maxLength}个字符` }
-  }
-
-  // 纯空白字符检查
-  if (isOnlyWhitespace(content) && trimmed.length > 0) {
-    return { valid: false, error: `${rules.fieldName}不能只包含空白字符` }
   }
 
   return { valid: true, error: null }

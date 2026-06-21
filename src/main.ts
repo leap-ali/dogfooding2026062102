@@ -77,7 +77,7 @@ function handlePublish(): void {
   }
 
   const result = validateForm(formData)
-  if (!result.valid && result.error) {
+  if (!result.valid) {
     alert(result.error)
     return
   }
@@ -121,7 +121,7 @@ function handleSaveEdit(): void {
   }
 
   const result = validateForm(formData)
-  if (!result.valid && result.error) {
+  if (!result.valid) {
     alert(result.error)
     return
   }

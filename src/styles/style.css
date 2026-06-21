@@ -58,6 +58,17 @@ body {
   margin-bottom: 16px;
 }
 
+.form-row {
+  display: flex;
+  gap: 16px;
+  margin-bottom: 16px;
+}
+
+.form-group-half {
+  flex: 1;
+  margin-bottom: 0;
+}
+
 .form-group label {
   display: block;
   margin-bottom: 6px;
@@ -170,10 +181,22 @@ body {
   color: #667eea;
 }
 
+.blog-item-meta {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 10px;
+}
+
+.blog-item-author {
+  font-size: 12px;
+  color: #667eea;
+  font-weight: 500;
+}
+
 .blog-item-time {
   font-size: 12px;
   color: #999;
-  margin-bottom: 10px;
 }
 
 .blog-item-summary {
@@ -269,10 +292,22 @@ body {
   flex: 1;
 }
 
+.modal-meta {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  margin-bottom: 12px;
+}
+
+.modal-author {
+  font-size: 13px;
+  color: #667eea;
+  font-weight: 500;
+}
+
 .modal-time {
   font-size: 12px;
   color: #999;
-  margin-bottom: 12px;
 }
 
 .modal-content-text {
@@ -299,6 +334,11 @@ body {
   .create-section,
   .list-section {
     padding: 16px;
+  }
+
+  .form-row {
+    flex-direction: column;
+    gap: 12px;
   }
 
   .blog-item-actions {

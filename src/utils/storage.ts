@@ -34,7 +34,7 @@ export function appendBlog(blog: Blog): void {
   persistBlogList(list)
 }
 
-export function modifyBlog(id: string, patch: Partial<Pick<Blog, 'title' | 'content'>>): boolean {
+export function modifyBlog(id: string, patch: Partial<Pick<Blog, 'title' | 'content' | 'author'>>): boolean {
   const list: BlogList = loadBlogList()
   const idx: number = list.findIndex((blog: Blog) => blog.id === id)
   if (idx === -1) {

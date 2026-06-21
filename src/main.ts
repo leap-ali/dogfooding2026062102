@@ -9,6 +9,7 @@ import {
   validateForm
 } from './services/blogService'
 
+const authorInput: HTMLInputElement | null = document.querySelector('#authorInput')
 const titleInput: HTMLInputElement | null = document.querySelector('#titleInput')
 const contentInput: HTMLTextAreaElement | null = document.querySelector('#contentInput')
 const publishBtn: HTMLButtonElement | null = document.querySelector('#publishBtn')
@@ -17,10 +18,12 @@ const emptyTip: HTMLDivElement | null = document.querySelector('#emptyTip')
 
 const viewModal: HTMLDivElement | null = document.querySelector('#viewModal')
 const viewTitle: HTMLHeadingElement | null = document.querySelector('#viewTitle')
-const viewTime: HTMLParagraphElement | null = document.querySelector('#viewTime')
+const viewAuthor: HTMLSpanElement | null = document.querySelector('#viewAuthor')
+const viewTime: HTMLSpanElement | null = document.querySelector('#viewTime')
 const viewContent: HTMLDivElement | null = document.querySelector('#viewContent')
 
 const editModal: HTMLDivElement | null = document.querySelector('#editModal')
+const editAuthorInput: HTMLInputElement | null = document.querySelector('#editAuthorInput')
 const editTitleInput: HTMLInputElement | null = document.querySelector('#editTitleInput')
 const editContentInput: HTMLTextAreaElement | null = document.querySelector('#editContentInput')
 const saveEditBtn: HTMLButtonElement | null = document.querySelector('#saveEditBtn')
@@ -50,7 +53,10 @@ function renderBlogList(): void {
       <div class="blog-item-header">
         <div class="blog-item-title" data-action="view">${escapeHtml(blog.title)}</div>
       </div>
-      <div class="blog-item-time">${formatTimestamp(blog.createTime)}</div>
+      <div class="blog-item-meta">
+        <span class="blog-item-author">${escapeHtml(blog.author || '匿名')}</span>
+        <span class="blog-item-time">${formatTimestamp(blog.createTime)}</span>
+      </div>
       <div class="blog-item-summary">${escapeHtml(blog.content)}</div>
       <div class="blog-item-actions">
         <button class="btn btn-primary btn-small" data-action="view">查看</button>
@@ -62,9 +68,10 @@ function renderBlogList(): void {
 }
 
 function handlePublish(): void {
-  if (!titleInput || !contentInput) return
+  if (!authorInput || !titleInput || !contentInput) return
 
   const formData: BlogFormData = {
+    author: authorInput.value,
     title: titleInput.value,
     content: contentInput.value
   }
@@ -76,6 +83,7 @@ function handlePublish(): void {
   }
 
   publishBlog(formData)
+  authorInput.value = ''
   titleInput.value = ''
   contentInput.value = ''
   renderBlogList()
@@ -83,9 +91,10 @@ function handlePublish(): void {
 
 function handleView(id: string): void {
   const blog: Blog | null = fetchBlogById(id)
-  if (!blog || !viewModal || !viewTitle || !viewTime || !viewContent) return
+  if (!blog || !viewModal || !viewTitle || !viewAuthor || !viewTime || !viewContent) return
 
   viewTitle.textContent = blog.title
+  viewAuthor.textContent = `作者：${blog.author || '匿名'}`
   viewTime.textContent = formatTimestamp(blog.createTime)
   viewContent.textContent = blog.content
   viewModal.classList.add('active')
@@ -93,18 +102,20 @@ function handleView(id: string): void {
 
 function handleEdit(id: string): void {
   const blog: Blog | null = fetchBlogById(id)
-  if (!blog || !editModal || !editTitleInput || !editContentInput) return
+  if (!blog || !editModal || !editAuthorInput || !editTitleInput || !editContentInput) return
 
   currentEditId = id
+  editAuthorInput.value = blog.author || ''
   editTitleInput.value = blog.title
   editContentInput.value = blog.content
   editModal.classList.add('active')
 }
 
 function handleSaveEdit(): void {
-  if (!editTitleInput || !editContentInput) return
+  if (!editAuthorInput || !editTitleInput || !editContentInput) return
 
   const formData: BlogFormData = {
+    author: editAuthorInput.value,
     title: editTitleInput.value,
     content: editContentInput.value
   }

@@ -15,9 +15,15 @@
 
     <section class="create-section">
       <h2>发布新博客</h2>
-      <div class="form-group">
-        <label for="titleInput">文章标题</label>
-        <input type="text" id="titleInput" placeholder="请输入文章标题" maxlength="100">
+      <div class="form-row">
+        <div class="form-group form-group-half">
+          <label for="authorInput">作者</label>
+          <input type="text" id="authorInput" placeholder="请输入作者名称" maxlength="50">
+        </div>
+        <div class="form-group form-group-half">
+          <label for="titleInput">文章标题</label>
+          <input type="text" id="titleInput" placeholder="请输入文章标题" maxlength="100">
+        </div>
       </div>
       <div class="form-group">
         <label for="contentInput">文章正文</label>
@@ -40,7 +46,10 @@
         <span class="close-btn" data-modal="viewModal">&times;</span>
       </div>
       <div class="modal-body">
-        <p id="viewTime" class="modal-time"></p>
+        <p class="modal-meta">
+          <span id="viewAuthor" class="modal-author"></span>
+          <span id="viewTime" class="modal-time"></span>
+        </p>
         <div id="viewContent" class="modal-content-text"></div>
       </div>
     </div>
@@ -53,6 +62,10 @@
         <span class="close-btn" data-modal="editModal">&times;</span>
       </div>
       <div class="modal-body">
+        <div class="form-group">
+          <label for="editAuthorInput">作者</label>
+          <input type="text" id="editAuthorInput" maxlength="50">
+        </div>
         <div class="form-group">
           <label for="editTitleInput">文章标题</label>
           <input type="text" id="editTitleInput" maxlength="100">

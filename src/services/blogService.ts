@@ -22,6 +22,7 @@ export function publishBlog(formData: BlogFormData): Blog {
     id: createId(),
     title: formData.title.trim(),
     content: formData.content.trim(),
+    author: formData.author.trim(),
     createTime: Date.now()
   }
   appendBlog(blog)
@@ -31,7 +32,8 @@ export function publishBlog(formData: BlogFormData): Blog {
 export function updateBlog(id: string, formData: BlogFormData): boolean {
   return modifyBlog(id, {
     title: formData.title.trim(),
-    content: formData.content.trim()
+    content: formData.content.trim(),
+    author: formData.author.trim()
   })
 }
 
@@ -46,6 +48,12 @@ export function formatTimestamp(ts: number): string {
 }
 
 export function validateForm(data: BlogFormData): string | null {
+  if (!data.author.trim()) {
+    return '作者名称不能为空'
+  }
+  if (data.author.trim().length > 50) {
+    return '作者名称不能超过50个字符'
+  }
   if (!data.title.trim()) {
     return '文章标题不能为空'
   }

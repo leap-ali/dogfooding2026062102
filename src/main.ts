@@ -137,7 +137,8 @@ function handleDelete(id: string): void {
   const blog: Blog | null = fetchBlogById(id)
   if (!blog) return
 
-  const confirmed: boolean = confirm(`确定要删除文章「${blog.title}」吗？`)
+  const author = blog.author || '匿名'
+  const confirmed: boolean = confirm(`确定要删除「${author}」的文章「${blog.title}」吗？`)
   if (!confirmed) return
 
   deleteBlog(id)

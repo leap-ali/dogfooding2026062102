@@ -2,6 +2,17 @@ import type { Blog, BlogList } from '../types/blog'
 
 const STORAGE_KEY: string = 'ts_blog_list'
 
+function isValidBlog(obj: unknown): obj is Blog {
+  if (typeof obj !== 'object' || obj === null) return false
+  const blog = obj as Blog
+  return (
+    typeof blog.id === 'string' &&
+    typeof blog.title === 'string' &&
+    typeof blog.content === 'string' &&
+    typeof blog.createTime === 'number'
+  )
+}
+
 export function loadBlogList(): BlogList {
   const raw: string | null = localStorage.getItem(STORAGE_KEY)
   if (!raw) {
@@ -12,7 +23,10 @@ export function loadBlogList(): BlogList {
     if (!Array.isArray(parsed)) {
       return []
     }
-    return parsed as BlogList
+    return parsed.filter(isValidBlog).map(blog => ({
+      ...blog,
+      author: typeof blog.author === 'string' ? blog.author : '匿名'
+    }))
   } catch {
     return []
   }
@@ -56,5 +70,8 @@ export function removeBlogById(id: string): boolean {
 }
 
 export function createId(): string {
-  return Date.now().toString(36) + Math.random().toString(36).substring(2, 8)
+  const timestamp = Date.now().toString(36)
+  const random = Math.random().toString(36).substring(2, 10)
+  const suffix = Math.random().toString(36).substring(2, 6)
+  return `${timestamp}-${random}-${suffix}`
 }

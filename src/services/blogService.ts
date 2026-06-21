@@ -7,16 +7,26 @@ import {
   findBlogById,
   createId
 } from '../utils/storage'
+import { validateFormData, type ValidationResult } from '../utils/validator'
 
+/**
+ * 获取所有博客列表（按创建时间倒序）
+ */
 export function fetchAllBlogs(): BlogList {
   const list: BlogList = loadBlogList()
   return list.sort((a: Blog, b: Blog) => b.createTime - a.createTime)
 }
 
+/**
+ * 根据ID获取博客详情
+ */
 export function fetchBlogById(id: string): Blog | null {
   return findBlogById(id)
 }
 
+/**
+ * 发布新博客
+ */
 export function publishBlog(formData: BlogFormData): Blog {
   const blog: Blog = {
     id: createId(),
@@ -29,6 +39,9 @@ export function publishBlog(formData: BlogFormData): Blog {
   return blog
 }
 
+/**
+ * 更新博客内容
+ */
 export function updateBlog(id: string, formData: BlogFormData): boolean {
   return modifyBlog(id, {
     title: formData.title.trim(),
@@ -37,31 +50,25 @@ export function updateBlog(id: string, formData: BlogFormData): boolean {
   })
 }
 
+/**
+ * 删除博客
+ */
 export function deleteBlog(id: string): boolean {
   return removeBlogById(id)
 }
 
+/**
+ * 格式化时间戳为可读字符串
+ */
 export function formatTimestamp(ts: number): string {
   const d: Date = new Date(ts)
   const pad = (n: number): string => String(n).padStart(2, '0')
   return `${d.getFullYear()}-${pad(d.getMonth() + 1)}-${pad(d.getDate())} ${pad(d.getHours())}:${pad(d.getMinutes())}`
 }
 
-export function validateForm(data: BlogFormData): string | null {
-  if (!data.author.trim()) {
-    return '作者名称不能为空'
-  }
-  if (data.author.trim().length > 50) {
-    return '作者名称不能超过50个字符'
-  }
-  if (!data.title.trim()) {
-    return '文章标题不能为空'
-  }
-  if (data.title.trim().length > 100) {
-    return '文章标题不能超过100个字符'
-  }
-  if (!data.content.trim()) {
-    return '文章内容不能为空'
-  }
-  return null
+/**
+ * 校验表单数据（使用独立的校验模块）
+ */
+export function validateForm(data: BlogFormData): ValidationResult {
+  return validateFormData(data.author, data.title, data.content)
 }

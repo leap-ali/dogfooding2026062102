@@ -76,9 +76,9 @@ function handlePublish(): void {
     content: contentInput.value
   }
 
-  const error: string | null = validateForm(formData)
-  if (error) {
-    alert(error)
+  const result = validateForm(formData)
+  if (!result.valid && result.error) {
+    alert(result.error)
     return
   }
 
@@ -120,9 +120,9 @@ function handleSaveEdit(): void {
     content: editContentInput.value
   }
 
-  const error: string | null = validateForm(formData)
-  if (error) {
-    alert(error)
+  const result = validateForm(formData)
+  if (!result.valid && result.error) {
+    alert(result.error)
     return
   }
 
